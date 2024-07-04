@@ -1,4 +1,3 @@
-//workflow for application
 name: Reactapp Workflow
 on:
   push:
