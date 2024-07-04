@@ -91,5 +91,5 @@ jobs:
           username: ${{ secrets.AZURE_VM_USERNAME }}
           key: ${{ secrets.VM_SSH_KEY }}
           port: 22
-          script: |                   
+          run: |                   
             docker run --name reactapp -d -p 3080:3080 reactapp/reactapp:${{ github.sha }}
