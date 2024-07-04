@@ -60,7 +60,7 @@ jobs:
           docker images
           docker run --name reactapp -d \
             -p 3080:3080 \
-            reactapp/reactapp:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/reactapp:${{ github.sha }}
           export IP=$( docker inspect -f '{{ range.NetworkSettings.Networks }}{{ .IPAddress }}{{ end }}' reactapp)
   dev-deploy:
     needs: docker
