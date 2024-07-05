@@ -115,7 +115,5 @@ jobs:
             sudo systemctl enable docker
           EOF
           script: |           
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/reactapp:${{ github.sha }}           
-            docker stop reactapp || true           
-            docker rm reactapp || true           
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/reactapp:${{ github.sha }}                     
             docker run -d -p 3080:3080 --name reactapp ${{ secrets.DOCKERHUB_USERNAME }}/reactapp:${{ github.sha }}
