@@ -96,6 +96,24 @@ jobs:
           username: ${{ secrets.AZURE_VM_USERNAME }}
           key: ${{ secrets.VM_SSH_KEY }}
           port: 22
+ 
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.VM_SSH_KEY }}
+ 
+      - name: Install Docker on Azure VM
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} << 'EOF'
+            sudo apt-get update
+            sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+            sudo apt-get update
+            sudo apt-get install -y docker-ce
+            sudo systemctl start docker
+            sudo systemctl enable docker
+          EOF
           script: |           
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/reactapp:${{ github.sha }}           
             docker stop reactapp || true           
